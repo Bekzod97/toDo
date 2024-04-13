@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+
+
+<body>
+
+  <div class="container">
+    <div class="wrapper">
+      <h1 class="title">ToDo App</h1>
+
+      <div>
+        <form action="#!" class="form" id="form">
+          <div class="form__group">
+            <input id="taskInput" type="text" class="task__input" placeholder="add to task">
+          </div>
+
+          <button type="submit" class="task__add" id="taskAdd" data-add="add">
+            <img src="./img/Plus.svg" alt="addTask">
+          </button>
+        </form>
+      </div>
+
+
+
+
+      <!-- add task -->
+      <div class="card__task">
+        <h2>Tasks to do -
+          <span id="addCounterTask">0</span>
+        </h2>
+
+        <ul id="taskList" class="task__list">
+          <li id="taskEmpty" class="task__empty task__item">
+            <img src="./img/emptyTask.svg" alt="empty" width="20px">
+            <div>Task Empty</div>
+          </li>
+        </ul>
+      </div>
+      <!-- add task end -->
+
+      <div class="card__done">
+        <h2>Done - <span id="addCounterDone">0</span></h2>
+        <ul id="doneList" class="done__list">
+
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="./js/main.js"></script>
+
+</body>
+
+</html>

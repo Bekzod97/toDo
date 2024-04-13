@@ -1,0 +1,178 @@
+/* inter-regular - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/inter-v13-latin-regular.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* inter-700 - latin */
+@font-face {
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/inter-v13-latin-700.woff2') format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+body {
+  font-family: 'Inter';
+  font-style: normal;
+  color: rgb(235, 235, 235);
+  font-size: 16px;
+  background-color: #0D0714;
+}
+
+button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+
+.container {
+  max-width: 983px;
+  width: 100%;
+  margin: 50px auto;
+  background-color: #0D0714;
+}
+
+.wrapper {
+  max-width: 432px;
+  margin: 0 auto;
+  padding-top: 20px;
+
+}
+
+.title {
+
+  text-align: center;
+  margin-bottom: 35px;
+  font-size: 24px;
+}
+
+
+/* form start */
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  gap: 11px;
+  margin-bottom: 75px;
+}
+
+.form__group {
+  width: 350px;
+}
+
+
+.task__input {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid #3E1671;
+  color: white;
+  padding: 11px 15px;
+  border-radius: 10px;
+}
+
+.task__add {
+  width: 40px;
+  height: 40px;
+  background-color: #9E78CF;
+  border-radius: 10px;
+  transition: .2s all;
+}
+
+.task__add:hover {
+  background-color: #7c61a0;
+}
+
+/* form end */
+
+/* add task start */
+.card__task {
+  margin-bottom: 25px;
+}
+
+.card__task h2 {
+  margin-bottom: 17px;
+}
+
+.task__list {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.task__empty{
+  display: flex;
+}
+.task__empty.none{
+  display: none;
+}
+
+
+.task__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #281f35;
+  color: #9e78cf;
+  height: 45px;
+  padding: 0 20px;
+  border-radius: 10px;
+}
+
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.buttons button {
+  width: 30px;
+  height: 30px;
+}
+
+
+.task__done:hover,
+.task__delete:hover {
+  opacity: .6;
+}
+
+.task__done img {
+  pointer-events: none;
+}
+
+.task__delete img {
+  pointer-events: none;
+}
+
+/* add task end */
+
+
+/* done task start */
+
+.card__done h2 {
+  margin-bottom: 17px;
+}
+
+.done__list {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+
+.done-item{
+  background-color: #281f35;
+  text-decoration: line-through;
+  color: #78cfb0;
+}
+
+/* done task end */
