@@ -1,7 +1,6 @@
 const form = document.querySelector("#form");
 const taskInput = document.querySelector("#taskInput");
 const taskList = document.querySelector("#taskList");
-const taskEmpty = document.querySelector("#taskEmpty");
 const doneList = document.querySelector("#doneList");
 
 let addCounterTask = document.querySelector("#addCounterTask");
@@ -12,35 +11,62 @@ taskList.addEventListener("click", deleteTask);
 taskList.addEventListener("click", doneTask);
 doneList.addEventListener("click", deleteDone);
 
-let taskCounter = 0;
-let doneCounter = 0;
+
 
 let tasks = [];
+let dones = [];
+
+// let taskCounter = 0;
+// let doneCounter = 0;
+
+checkEmpty()
 
 if (localStorage.getItem("tasks")) {
-
-  tasks = (JSON.parse(localStorage.getItem("tasks")));
-  console.log(tasks);
+  tasks = JSON.parse(localStorage.getItem("tasks"));
+  console.log(localStorage.getItem("tasks"));
 }
 
-tasks.forEach(task => {
-  let cssClass = task.done ? "task__item done-item" : "task__item"
-  // ///////////////////////////////////////////////////////////////////////
+if (localStorage.getItem("dones")) {
+  dones = JSON.parse(localStorage.getItem("dones"));
+  console.log(localStorage.getItem("dones"));
+}
 
-  let taskHTML = ` <li id=${task.id} class="${cssClass}">
-    <span class="task__title">${task.text}</span>
-    <div class="buttons">
-      <button id="taskDone" class="task__done " data-action="done">
-        <img src="./img/done.svg" alt="">
-      </button>
-      <button id="taskDelete" class="task__delete " data-action="delete">
-        <img src="./img/delete.svg" alt="">
-      </button>
-    </div>
-  </li>`
+tasks.forEach(item => {
+  let taskHTML = ` <li id=${item.id} class="task__item">
+  <span class="task__title">${item.text}</span>
+  <div class="buttons">
+    <button id="taskDone" class="task__done " data-action="done">
+      <img src="./img/done.svg" alt="">
+    </button>
+    <button id="taskDelete" class="task__delete " data-action="delete">
+      <img src="./img/delete.svg" alt="">
+    </button>
+  </div>
+</li>`
 
   taskList.insertAdjacentHTML("beforeend", taskHTML);
-});
+  checkEmpty();
+
+  addCounterTask.innerHTML = tasks.length;
+})
+
+dones.forEach(item => {
+  let taskHTML = ` <li id=${item.id} class="task__item done-item">
+  <span class="task__title">${item.text}</span>
+  <div class="buttons">
+
+    <button id="taskDelete" class="task__delete " data-action="delete">
+      <img src="./img/delete.svg" alt="">
+    </button>
+  </div>
+</li>`
+
+  doneList.insertAdjacentHTML("beforeend", taskHTML);
+
+  addCounterDone.innerHTML = dones.length;
+
+})
+
 
 function addTask(event) {
 
@@ -48,21 +74,19 @@ function addTask(event) {
 
   let taskText = taskInput.value;
 
-  // Работа с данными
-  let newTask = {
-    id: Date.now(),
-    text: taskText,
-    done: false,
+  if (taskText == 0) {
+    return;
   };
 
-  tasks.push(newTask);
+  // Определяем обьект 
+  let newTask = {
+    id: Date.now(),
+    text: taskText
+  }
 
-  saveToLocalStorage()
+  tasks.push(newTask)
 
-  let cssClass = newTask.done ? "task__item done-item" : "task__item"
-  // ///////////////////////////////////////////////////////////////////////
-
-  let taskHTML = ` <li id=${newTask.id} class="${cssClass}">
+  let taskHTML = ` <li id=${newTask.id} class="task__item">
     <span class="task__title">${newTask.text}</span>
     <div class="buttons">
       <button id="taskDone" class="task__done " data-action="done">
@@ -74,23 +98,18 @@ function addTask(event) {
     </div>
   </li>`
 
-  if (taskInput.value == 0) {
-    return;
-  };
-
   taskList.insertAdjacentHTML("beforeend", taskHTML);
+
+  tasksSaveToLocalStorage();
 
   taskInput.value = "";
   taskInput.focus();
 
-  if (taskList.children.length > 1) {
-    taskEmpty.classList.add("none");
-  }
-  taskCounter++;
-  addCounterTask.innerHTML = taskCounter;
+  checkEmpty();
+
+  addCounterTask.innerHTML = tasks.length;
 
 }
-
 
 function deleteTask(event) {
 
@@ -100,28 +119,20 @@ function deleteTask(event) {
 
   let parentNode = event.target.closest(".task__item");
 
-  // Работа с  данными
-  // находим ID задачи
+  // Работа с данными
 
-  let id = parentNode.id;
+  let id = +parentNode.id;
 
-  // Находим и удаляем задачу через   
-
-  tasks = tasks.filter((task) => task.id != id);
-  saveToLocalStorage();
-
-  // ////////////////////////////////////////////////
+  tasks = tasks.filter(item => item.id !== id);
+  // /////////////////////////////
 
   parentNode.remove();
 
-  if (taskList.children.length === 1) {
-    taskEmpty.classList.remove("none");
-  }
+  checkEmpty();
+  tasksSaveToLocalStorage();
 
-  taskCounter--;
-  addCounterTask.innerHTML = taskCounter;
+  addCounterTask.innerHTML = tasks.length;
 }
-
 
 function doneTask(event) {
 
@@ -129,29 +140,33 @@ function doneTask(event) {
 
   let parentNode = event.target.closest(".task__item");
 
-  // Работа с данными
-  let id = parentNode.id;
-  let task = tasks.find(task => task.id == id);
-  task.done = !task.done
+  // Работаем с данными
+  let id = +parentNode.id;
 
-  task.done && parentNode.classList.add("done-item");
+  let newDone = {
+    id: id,
+    text: parentNode.innerText
+  }
+
+  dones.push(newDone)
+
+  tasks = tasks.filter(item => item.id !== id);
   // /////////////////////////////
 
+  parentNode.classList.add("done-item");
   event.target.style.display = "none";
 
   doneList.insertAdjacentHTML("beforeend", parentNode.outerHTML);
-  saveToLocalStorage();
+
   parentNode.remove();
 
-  if (taskList.children.length === 1) {
-    taskEmpty.classList.remove("none");
-  }
+  checkEmpty();
+  donesSaveToLocalStorage();
+  tasksSaveToLocalStorage();
 
-  taskCounter--;
-  addCounterTask.innerHTML = taskCounter;
 
-  doneCounter++;
-  addCounterDone.innerHTML = doneCounter;
+  addCounterTask.innerHTML = tasks.length;
+  addCounterDone.innerHTML = dones.length;
 }
 
 function deleteDone(event) {
@@ -162,26 +177,45 @@ function deleteDone(event) {
 
   let parentNode = event.target.closest(".task__item");
 
-  // Работа с  данными
-  // находим ID задачи
+  // Работаем с данными
 
-  let id = parentNode.id;
+  let id = +parentNode.id;
+  dones = dones.filter(item => item.id !== id);
 
-  // Находим и удаляем задачу через   
-
-  tasks = tasks.filter((task) => task.id != id);
-
-  saveToLocalStorage();
-  // /////////////////////////////////////////////
+  // /////////////////////
 
   parentNode.remove();
 
-  doneCounter--;
-  addCounterDone.innerHTML = doneCounter;
+  donesSaveToLocalStorage();
+
+  addCounterDone.innerHTML = dones.length;
+
 }
 
+function checkEmpty() {
 
-function saveToLocalStorage() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  console.log(JSON.stringify(tasks));
+  if (tasks.length == 0) {
+
+    let emptyListHTML = `<li id="taskEmpty" class="task__empty task__item ">
+                          <img src="./img/emptyTask.svg" alt="empty" width="20px">
+                          <div>Task Empty</div>
+                     </li>`
+
+    taskList.insertAdjacentHTML("afterbegin", emptyListHTML);
+  }
+
+  if (tasks.length > 0) {
+
+    let emptyListElem = document.querySelector("#taskEmpty");
+    emptyListElem ? emptyListElem.remove() : null;
+  }
+}
+
+function tasksSaveToLocalStorage() {
+
+  localStorage.setItem("tasks", JSON.stringify(tasks))
+}
+
+function donesSaveToLocalStorage() {
+  localStorage.setItem("dones", JSON.stringify(dones));
 }
