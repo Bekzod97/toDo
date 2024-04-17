@@ -11,13 +11,8 @@ taskList.addEventListener("click", deleteTask);
 taskList.addEventListener("click", doneTask);
 doneList.addEventListener("click", deleteDone);
 
-
-
 let tasks = [];
 let dones = [];
-
-// let taskCounter = 0;
-// let doneCounter = 0;
 
 checkEmpty()
 
@@ -67,9 +62,8 @@ dones.forEach(item => {
 
 })
 
-
 function addTask(event) {
-
+  
   event.preventDefault();
 
   let taskText = taskInput.value;
@@ -108,7 +102,6 @@ function addTask(event) {
   checkEmpty();
 
   addCounterTask.innerHTML = tasks.length;
-
 }
 
 function deleteTask(event) {
@@ -163,7 +156,6 @@ function doneTask(event) {
   checkEmpty();
   donesSaveToLocalStorage();
   tasksSaveToLocalStorage();
-
 
   addCounterTask.innerHTML = tasks.length;
   addCounterDone.innerHTML = dones.length;
